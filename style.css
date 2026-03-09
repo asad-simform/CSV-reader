@@ -19,3 +19,24 @@ td, th {
 tr:nth-child(even) {
     background-color: rgb(215, 214, 214);
 }
+
+.pagination{
+    display: none;
+    align-items: center;
+    margin-left: 24px;
+    /* display: none; */
+}
+
+.btns {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+}
+
+.btns #prev, .btns #next {
+    cursor: pointer;
+}
+
+.pagination select {
+    padding: 8px 12px;
+}

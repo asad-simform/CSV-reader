@@ -49,7 +49,7 @@ file.addEventListener("change", async (e) => {
     manager.textToJSON(data)
     manager.pagination.style.display = "flex"
     // console.log(jsonData);
-    manager.renderData(0, manager.size)
+    manager.renderData(manager.headers, manager.data, 0, manager.size)
 })
 
 // pageSize.addEventListener("change", (e) => {

@@ -4,6 +4,8 @@ class CSVParser {
             headers: [],
             finalJSON: []
         }
+        this.headers = []
+        this.data = []
         this.table = document.getElementById("table")
     }
     textToJSON(data) {
@@ -18,10 +20,12 @@ class CSVParser {
             }
             this.dataObj.finalJSON.push(obj)
         }
+        this.headers = [...this.dataObj.headers]
+        this.data = JSON.parse(JSON.stringify(this.dataObj.finalJSON))
     }
-    renderData(start, end) {
+    renderData(headers, data, start, end) {
         const tr = document.createElement("tr")
-        for (const head of this.dataObj.headers) {
+        for (const head of headers) {
             const th = document.createElement("th")
             th.innerText = head 
             tr.appendChild(th)
@@ -33,10 +37,10 @@ class CSVParser {
             console.log(idx);
             
             const tr = document.createElement("tr")
-            const ele = this.dataObj.finalJSON[idx]
-            for(let i=0;i<this.dataObj.headers.length;i++) {
+            const ele = data[idx]
+            for(let i=0;i<headers.length;i++) {
                 const td = document.createElement("td")
-                td.innerText = ele[this.dataObj.headers[i]]
+                td.innerText = ele[headers[i]]
                 tr.appendChild(td)
             }
             this.table.appendChild(tr)

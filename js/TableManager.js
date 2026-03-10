@@ -13,11 +13,26 @@ class TableManager extends CSVParser {
         this.pagination = document.querySelector(".pagination")
         this.filter = document.getElementById("filter")
         this.table = document.getElementById("table")
+        this.checkboxCon = document.getElementById("checkbox-container")
         this.next.addEventListener("click", () => this.nextBtn())
         this.prev.addEventListener("click", () => this.prevBtn())
         this.pageSize.addEventListener("change", (e) => this.pageSizeHandler(e))
         this.filter.addEventListener("input", (e) => this.applyFilterAndSort())
         this.table.addEventListener("click", (e) => this.toggleSort(e))
+        this.checkboxCon.addEventListener("click", (e) => this.checkboxHandler(e))
+    }
+
+    renderCheckBox() {
+        this.dataObj.headers.forEach((head) => {
+            const checkbox = document.createElement("input")
+            checkbox.type = "checkbox"
+            checkbox.value = head.val
+            checkbox.checked = true
+            const label = document.createElement("label")
+            label.appendChild(document.createTextNode(head.val.replace("_", " "))) 
+            this.checkboxCon.append(checkbox)
+            this.checkboxCon.append(label)
+        })
     }
 
     renderData(headers, data, start, end) {
@@ -115,12 +130,12 @@ class TableManager extends CSVParser {
             if(sort === "asc") {
                 if(isNaN(this.data[0][this.headers[this.index]]))
                     this.data.sort((a,b) => a[key].toLowerCase().localeCompare(b[key].toLowerCase()))
-                else this.data.sort((a,b) => a[key] - b[key])
+                else this.data.sort((a,b) => Number(a[key]) - Number(b[key]))
             }
             else if(sort === "des") {
                 if(isNaN(this.data[0][this.headers[this.index]]))
                     this.data.sort((a,b) => b[key].toLowerCase().localeCompare(a[key].toLowerCase()))
-                else this.data.sort((a,b) => b[key] - a[key])
+                else this.data.sort((a,b) => Number(b[key]) - Number(a[key]))
             }
             else this.index = -1
         } 
@@ -130,6 +145,16 @@ class TableManager extends CSVParser {
         let end = this.page*this.size > this.data.length ? this.data.length : this.page*this.size
         this.table.replaceChildren()
         this.renderData(this.headers, this.data, this.page*this.size - this.size, end)
+    }
+
+    checkboxHandler(e) {
+        if(e.target.type === "checkbox") {
+            const head = Array.from(this.checkboxCon.querySelectorAll("input[type='checkbox']")).filter((ch) => ch.checked === true).map((val) => val.value)
+            this.headers = this.dataObj.headers.filter((val) => head.includes(val.val))
+            // console.log(newHead);
+            
+            this.applyFilterAndSort()
+        }
     }
 
 }

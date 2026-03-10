@@ -40,3 +40,27 @@ tr:nth-child(even) {
 .pagination select {
     padding: 8px 12px;
 }
+
+.modal-container {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-body {
+    border-radius: 12px;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 24px 34px;
+}
+
+.modal-body div {
+    display: flex;
+    font-size: 18px;
+    margin-bottom: 4px;
+}

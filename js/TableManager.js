@@ -15,6 +15,7 @@ class TableManager extends CSVParser {
         this.table = document.getElementById("table")
         this.resetBtn = document.getElementById("reset")
         this.checkboxCon = document.getElementById("checkbox-container")
+        this.modalContainer = document.getElementById("modal-container")
         this.next.addEventListener("click", () => this.nextBtn())
         this.prev.addEventListener("click", () => this.prevBtn())
         this.pageSize.addEventListener("change", (e) => this.pageSizeHandler(e))
@@ -22,6 +23,7 @@ class TableManager extends CSVParser {
         this.table.addEventListener("click", (e) => this.toggleSort(e))
         this.checkboxCon.addEventListener("click", (e) => this.checkboxHandler(e))
         this.resetBtn.addEventListener("click", (e) => this.resetHandler(e))
+        this.modalContainer.addEventListener("click", (e) => { if(e.target === this.modalContainer) this.modalContainer.style.display = "none" })
     }
 
     renderCheckBox() {
@@ -105,6 +107,8 @@ class TableManager extends CSVParser {
     }
 
     toggleSort(e) {
+        // console.log(e.target);
+        
         if(e.target.tagName === "TH") {
             this.headers.forEach((head, index) => {
                 if(head.val === e.target.dataset.val) {
@@ -116,6 +120,21 @@ class TableManager extends CSVParser {
 
             })
             this.applyFilterAndSort()
+        } else if(e.target.closest("tr")) {
+            console.log(this.modalContainer.classList);
+            
+            this.modalContainer.style.display = "block"
+            this.modalContainer.replaceChildren()
+            const popupBody = document.createElement("div")
+            popupBody.classList.add("modal-body")
+            Array.from(e.target.parentElement.children).forEach((val, idx) => {
+                const div = document.createElement("div")
+                div.append(`${this.headers[idx].val}: ${val.innerText}`)
+                popupBody.append(div)
+            })
+            this.modalContainer.append(popupBody)
+            // document.body.append(popup)
+            
         }
     }
 

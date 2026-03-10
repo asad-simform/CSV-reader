@@ -8,5 +8,6 @@ file.addEventListener("change", async (e) => {
     const data = await file.text()
     manager.textToJSON(data)
     manager.pagination.style.display = "flex"
+    manager.renderCheckBox()
     manager.renderData(manager.headers, manager.data, 0, manager.size)
 })

@@ -13,6 +13,7 @@ class TableManager extends CSVParser {
         this.pagination = document.querySelector(".pagination")
         this.filter = document.getElementById("filter")
         this.table = document.getElementById("table")
+        this.resetBtn = document.getElementById("reset")
         this.checkboxCon = document.getElementById("checkbox-container")
         this.next.addEventListener("click", () => this.nextBtn())
         this.prev.addEventListener("click", () => this.prevBtn())
@@ -20,6 +21,7 @@ class TableManager extends CSVParser {
         this.filter.addEventListener("input", (e) => this.applyFilterAndSort())
         this.table.addEventListener("click", (e) => this.toggleSort(e))
         this.checkboxCon.addEventListener("click", (e) => this.checkboxHandler(e))
+        this.resetBtn.addEventListener("click", (e) => this.resetHandler(e))
     }
 
     renderCheckBox() {
@@ -155,6 +157,14 @@ class TableManager extends CSVParser {
             
             this.applyFilterAndSort()
         }
+    }
+
+    resetHandler(e) {
+        this.dataObj.headers.forEach((head) => {
+            head.sort = "none"
+        })
+        this.filter.value = ""
+        this.applyFilterAndSort()
     }
 
 }

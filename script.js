@@ -11,4 +11,5 @@ file.addEventListener("change", async (e) => {
     manager.exportBtns.style.display = "flex"
     manager.renderCheckBox()
     manager.renderData(manager.headers, manager.data, 0, manager.size)
+    // manager.displayStats()
 })

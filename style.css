@@ -8,7 +8,7 @@ table {
 }
 
 th {
-    background-color: black;
+    background-color: rgb(67, 67, 67);
     color: white;    
     cursor: pointer;
 }
@@ -16,11 +16,16 @@ th {
 td, th {
     padding: 8px 12px;
 }
-
-tr:nth-child(even) {
-    background-color: rgb(215, 214, 214);
+td{
+    border: 1px solid rgb(174, 173, 173);
 }
 
+tr:nth-child(even) {
+    background-color: rgb(235, 235, 235);
+}
+tr:hover {
+    background-color: rgb(203, 202, 202);
+}
 .pagination{
     display: none;
     align-items: center;
@@ -34,12 +39,38 @@ tr:nth-child(even) {
     margin-right: 12px;
 }
 
+.btns p {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+button {
+    color: white;
+    font-size: 14px;
+    background-color: rgb(67, 67, 67);
+    border: none;
+    outline: none;
+    padding: 4px 16px;
+    margin-right: 8px;
+}
+
+button:hover {
+    background-color: rgb(108, 108, 108);
+}
+
 .btns #prev, .btns #next {
     cursor: pointer;
 }
 
 .pagination select {
     padding: 8px 12px;
+}
+
+.pagination #filter {
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 6px 10px;
+    font-size: 14px;
 }
 
 .modal-container {
@@ -92,6 +123,10 @@ tr:nth-child(even) {
     border-radius: 8px;
     height: fit-content;
     padding: 12px 18px;
+}
+
+.stats h3 {
+    margin: 0 0 6px;
 }
 
 .stats p {

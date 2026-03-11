@@ -248,9 +248,12 @@ class TableManager extends CSVParser {
                     if(this.data[index][element] in obj) {
                         obj[this.data[index][element]]++
                     } else {
-                        obj[this.data[index][element]] = 0
+                        obj[this.data[index][element]] = 1
                     }
                 }
+                const h3 = document.createElement("h3")
+                h3.appendChild(document.createTextNode(element))
+                div.appendChild(h3)
                 Object.keys(obj).forEach((key) => {
                     const p = document.createElement("p")
                     p.appendChild(document.createTextNode(`${key}: ${obj[key]}`))

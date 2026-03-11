@@ -17,6 +17,7 @@ class TableManager extends CSVParser {
         this.checkboxCon = document.getElementById("checkbox-container")
         this.modalContainer = document.getElementById("modal-container")
         this.exportBtns = document.getElementsByClassName("export-btns")[0]
+        this.stats = document.getElementById("stats")
         this.next.addEventListener("click", () => this.nextBtn())
         this.prev.addEventListener("click", () => this.prevBtn())
         this.pageSize.addEventListener("change", (e) => this.pageSizeHandler(e))
@@ -41,11 +42,15 @@ class TableManager extends CSVParser {
         })
     }
 
-    renderData(headers, data, start, end) {
+    renderData() {
         // console.log(this.headers);
-        
+        let start = this.page*this.size - this.size
+        this.pageText.innerText = `${this.page}/${Math.ceil(this.data.length / this.size)}`
+        let end = this.page*this.size > this.data.length ? this.data.length : this.page*this.size
+        this.table.replaceChildren()
+        this.stats.replaceChildren()
         const tr = document.createElement("tr")
-        for (const head of headers) {
+        for (const head of this.headers) {
             const th = document.createElement("th")
             th.innerHTML = head.val.replace("_", " ")
             if(head.sort === "asc")
@@ -64,24 +69,21 @@ class TableManager extends CSVParser {
             // console.log(idx);
             
             const tr = document.createElement("tr")
-            const ele = data[idx]
-            for(let i=0;i<headers.length;i++) {
+            const ele = this.data[idx]
+            for(let i=0;i<this.headers.length;i++) {
                 const td = document.createElement("td")
-                td.innerText = ele[headers[i].val]
+                td.innerText = ele[this.headers[i].val]
                 tr.appendChild(td)
             }
             this.table.appendChild(tr)
         }
-        
+        this.displayStats()
     }
 
     nextBtn(e) {
         if(this.page+1 <= Math.ceil(this.data.length / this.size)) {
             this.page++
-            this.pageText.innerText = `${this.page}/${Math.ceil(this.data.length / this.size)}`
-            this.table.replaceChildren()
-            let end = this.page*this.size > this.data.length ? this.data.length : this.page*this.size
-            this.renderData(this.headers, this.data, this.page*this.size - this.size, end)
+            this.renderData()
         }
         else return
         console.log(this.page);
@@ -90,10 +92,7 @@ class TableManager extends CSVParser {
     prevBtn() {
         if(this.page > 1) {
             this.page--
-            this.pageText.innerText = `${this.page}/${Math.ceil(this.data.length / this.size)}`
-            this.table.replaceChildren()
-            let end = this.page*this.size > this.data.length ? this.data.length : this.page*this.size
-            this.renderData(this.headers, this.data, this.page*this.size - this.size, end)
+            this.renderData()
         } else return 
         console.log(this.page);
     }
@@ -101,10 +100,7 @@ class TableManager extends CSVParser {
     pageSizeHandler(e) {
         this.size = Number(e.target.value)
         if(this.page > this.data.length/this.size) this.page = Math.ceil(this.data.length/this.size)
-        this.pageText.innerText = `${this.page}/${Math.ceil(this.data.length / this.size)}`
-        this.table.replaceChildren()
-        let end = this.page*this.size > this.data.length ? this.data.length : this.page*this.size
-        this.renderData(this.headers, this.data, this.page*this.size - this.size, end)
+        this.renderData()
         console.log(this.size);
     }
 
@@ -164,10 +160,7 @@ class TableManager extends CSVParser {
         } 
         if(this.page > this.data.length/this.size) this.page = Math.ceil(this.data.length/this.size)
         if(this.page === 0 && Math.ceil(this.data.length/this.size) > 0) this.page = 1
-        this.pageText.innerText = `${this.page}/${Math.ceil(this.data.length / this.size)}`
-        let end = this.page*this.size > this.data.length ? this.data.length : this.page*this.size
-        this.table.replaceChildren()
-        this.renderData(this.headers, this.data, this.page*this.size - this.size, end)
+        this.renderData()
     }
 
     checkboxHandler(e) {
@@ -181,7 +174,7 @@ class TableManager extends CSVParser {
     }
 
     resetHandler(e) {
-        this.dataObj.headers.forEach((head) => {
+        this.headers.forEach((head) => {
             head.sort = "none"
         })
         this.filter.value = ""
@@ -242,6 +235,33 @@ class TableManager extends CSVParser {
         
     }
 
+    displayStats() {
+        let heading = ["gender", "department", "job_title", "country", "status"]
+        let headers = this.headers.map((val) => val.val)
+
+        for (const element of headers) {
+            if(heading.includes(element)) {
+                const div = document.createElement("div")
+                div.classList.add("stats")
+                let obj = {}
+                for (let index = 0; index < this.data.length; index++) {
+                    if(this.data[index][element] in obj) {
+                        obj[this.data[index][element]]++
+                    } else {
+                        obj[this.data[index][element]] = 0
+                    }
+                }
+                Object.keys(obj).forEach((key) => {
+                    const p = document.createElement("p")
+                    p.appendChild(document.createTextNode(`${key}: ${obj[key]}`))
+                    div.appendChild(p)
+                })
+                this.stats.appendChild(div)
+            }
+
+        }
+
+    }
 
 }
 

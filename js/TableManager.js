@@ -16,6 +16,7 @@ class TableManager extends CSVParser {
         this.resetBtn = document.getElementById("reset")
         this.checkboxCon = document.getElementById("checkbox-container")
         this.modalContainer = document.getElementById("modal-container")
+        this.exportBtns = document.getElementsByClassName("export-btns")[0]
         this.next.addEventListener("click", () => this.nextBtn())
         this.prev.addEventListener("click", () => this.prevBtn())
         this.pageSize.addEventListener("change", (e) => this.pageSizeHandler(e))
@@ -23,6 +24,7 @@ class TableManager extends CSVParser {
         this.table.addEventListener("click", (e) => this.toggleSort(e))
         this.checkboxCon.addEventListener("click", (e) => this.checkboxHandler(e))
         this.resetBtn.addEventListener("click", (e) => this.resetHandler(e))
+        this.exportBtns.addEventListener("click", (e) => this.exportData(e))
         this.modalContainer.addEventListener("click", (e) => { if(e.target === this.modalContainer) this.modalContainer.style.display = "none" })
     }
 
@@ -48,7 +50,7 @@ class TableManager extends CSVParser {
             th.innerHTML = head.val.replace("_", " ")
             if(head.sort === "asc")
                 th.innerHTML += "&#9650;"
-            else if(head.sort === "des") 
+            else if(head.sort === "desc") 
                 th.innerHTML += "&#9660;"  
             // console.log(head.sort, th.innerHTML);
              
@@ -113,7 +115,7 @@ class TableManager extends CSVParser {
             this.headers.forEach((head, index) => {
                 if(head.val === e.target.dataset.val) {
                     if(head.sort === "none") head.sort = "asc"
-                    else if(head.sort === "asc") head.sort = "des"
+                    else if(head.sort === "asc") head.sort = "desc"
                     else head.sort = "none"
                     this.index = index
                 } else head.sort = "none"
@@ -149,12 +151,12 @@ class TableManager extends CSVParser {
             let key = this.headers[this.index].val
             let sort = this.headers[this.index].sort
             if(sort === "asc") {
-                if(isNaN(this.data[0][this.headers[this.index]]))
+                if(isNaN(this.data[0][this.headers[this.index].val]))
                     this.data.sort((a,b) => a[key].toLowerCase().localeCompare(b[key].toLowerCase()))
                 else this.data.sort((a,b) => Number(a[key]) - Number(b[key]))
             }
-            else if(sort === "des") {
-                if(isNaN(this.data[0][this.headers[this.index]]))
+            else if(sort === "desc") {
+                if(isNaN(this.data[0][this.headers[this.index].val]))
                     this.data.sort((a,b) => b[key].toLowerCase().localeCompare(a[key].toLowerCase()))
                 else this.data.sort((a,b) => Number(b[key]) - Number(a[key]))
             }
@@ -185,6 +187,61 @@ class TableManager extends CSVParser {
         this.filter.value = ""
         this.applyFilterAndSort()
     }
+
+    exportData(e) {
+        if(e.target.tagName === "BUTTON") {
+            if(e.target.id === "json") {
+                let jsonArr = []
+
+                this.data.forEach((data) => {
+                    let obj = {}
+                    for (const element of this.headers) {
+                        obj[element.val] = data[element.val]
+                    }
+                    jsonArr.push(obj)
+                })
+
+                const jsonString = JSON.stringify([this.headers, jsonArr], null, 4)
+                const blob = new Blob([jsonString], {type: "application/json"})
+                const href = URL.createObjectURL(blob)
+                const link = document.createElement("a")
+                link.href = href 
+                link.download = "data.json"
+                document.body.append(link)
+                link.click()
+                document.body.removeChild(link)
+            } else if(e.target.id === "csv") {
+                let csvString = ""
+                this.headers.forEach((val, idx) => {
+                    csvString += val.val
+                    if(idx < this.headers.length - 1) csvString += "," 
+                })
+                csvString += "\n"
+                // console.log(this.data);
+                
+                this.data.forEach((val) => {
+                    let arr = []
+                    for (const element of this.headers) {
+                        arr.push(val[element.val])
+                    }
+                    csvString += arr.join(",")
+                    csvString += "\n"
+                })
+                
+                const blob = new Blob([csvString], {type: "text/csv;charset=utf-8;"})
+                const href = URL.createObjectURL(blob)
+                const link = document.createElement("a")
+                link.href = href 
+                link.download = "data.csv"
+                document.body.append(link)
+                link.click()
+                document.body.removeChild(link)
+            }
+            
+        }
+        
+    }
+
 
 }
 

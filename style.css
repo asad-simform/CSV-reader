@@ -1,0 +1,135 @@
+table {
+    margin-top: 12px;
+    width: 100%;
+    text-align: center;
+    padding: 24px;
+    border: 1px solid black; 
+    border-collapse: collapse;  
+}
+
+th {
+    background-color: rgb(67, 67, 67);
+    color: white;    
+    cursor: pointer;
+}
+
+td, th {
+    padding: 8px 12px;
+}
+td{
+    border: 1px solid rgb(174, 173, 173);
+}
+
+tr:nth-child(even) {
+    background-color: rgb(235, 235, 235);
+}
+tr:hover {
+    background-color: rgb(203, 202, 202);
+}
+.pagination{
+    display: none;
+    align-items: center;
+    margin-left: 24px;
+    /* display: none; */
+}
+
+.btns {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+}
+
+.btns p {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+button {
+    color: white;
+    font-size: 14px;
+    background-color: rgb(67, 67, 67);
+    border: none;
+    outline: none;
+    padding: 4px 16px;
+    margin-right: 8px;
+}
+
+button:hover {
+    background-color: rgb(108, 108, 108);
+}
+
+.btns #prev, .btns #next {
+    cursor: pointer;
+}
+
+.pagination select {
+    padding: 8px 12px;
+}
+
+.pagination #filter {
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+.modal-container {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-body {
+    border-radius: 12px;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 24px 34px;
+}
+
+.modal-body div {
+    display: flex;
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.file-export {
+    display: flex;
+}
+
+.export-btns {
+    display: none;
+    column-gap: 12px;
+}
+
+.export-btns button {
+    cursor: pointer;
+}
+
+.stats-con {
+    display: flex;
+    column-gap: 12px;
+    margin-top: 24px;
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 8px;
+    height: fit-content;
+    padding: 12px 18px;
+}
+
+.stats h3 {
+    margin: 0 0 6px;
+}
+
+.stats p {
+    padding: 0;
+    margin: 0;
+}
